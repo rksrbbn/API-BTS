@@ -16,4 +16,5 @@ router.post('/gambar/kelas/upload', photoValidator.create, photoController.uploa
 router.put('/gambar/kelas/ubah/:gambar_id', photoController.update) // update photo class by id
 router.delete('/gambar/kelas/hapus/:gambar_id', photoController.delete) // delete photo class by id
 
+router.post('/gambar/download/:gambar_id', photoController.download) // download image
 module.exports = router

@@ -233,4 +233,17 @@ module.exports = {
       }
     );
   },
+
+  //  download photo
+  download: (req, res) => {
+    Photo.download(req.con, req.params.gambar_id, req.res, (filename) => {
+        const file = 'public/images/'+filename
+        res.download(file);
+        // res.status(200).json({
+        //   message: "Success to download photo class",
+        //   filename: filename,
+        //   error: false,
+        // });
+    })
+  }
 };

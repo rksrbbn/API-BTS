@@ -75,7 +75,7 @@ module.exports = {
               error: true,
             });
           } else {
-            // check if photo class over then 3 where is same kelas id and same type
+            // check if photo class over than 3 where is same kelas id and same type
             con.query(
               `SELECT * FROM gambar WHERE kelas_id = ${data.kelas_id} AND gambar_jenis = '${data.jenis}'`,
               (err, result) => {
@@ -402,4 +402,37 @@ module.exports = {
     }
     check();
   },
+
+  // download photo class
+  download: (con, id, res, callback) => {
+     // check if id is in database or not
+     con.query(`SELECT * FROM gambar WHERE gambar_id = ${id}`, (err, result) => {
+      if (err) {
+        res.status(500).json({
+          message: "Failed to get image",
+          error: err,
+        });
+      } else {
+        if (result.length === 0) {
+          res.status(404).json({
+            message: "Image not found",
+            error: true,
+          });
+        } else {
+          // download data from storage
+          con.query(`SELECT gambar_nama from gambar WHERE gambar_id = ${id}`, (err, result) => {
+            if (err) {
+              res.status(500).json({
+                message: "Failed to get image",
+                error: err,
+              });
+            }
+            // return res.send(result[0].gambar_nama)
+            filename = result[0].gambar_nama
+            return callback(filename)
+          })
+        }
+      }
+    });
+  }
 };
